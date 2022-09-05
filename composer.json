@@ -1,0 +1,17 @@
+{
+    "name": "chirindja/seb",
+    "description": "sistema de emisao de bilhetes para o controle de filas",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Seb\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "felizardochirindja",
+            "email": "felizardo.chirindja@gmail.com"
+        }
+    ],
+    "require": {}
+}
