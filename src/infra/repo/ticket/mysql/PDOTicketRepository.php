@@ -31,7 +31,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         return $ticket;
     }
 
-    public function readTicketById(int $id): array
+    private function readTicketById(int $id): array
     {
         $query = '
             select * from tickets where id = :id;
@@ -39,6 +39,22 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
 
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':id', $id);
+        $statment->execute();
+
+        $ticket = $statment->fetch(PDO::FETCH_ASSOC);
+        return $ticket;
+    }
+
+    public function readLastInsertedTicket(): array
+    {
+        $query = '
+            select * from tickets where id = :id;
+        ';
+
+        $ticketId = $this->connection->lastInsertId();
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindValue(':id', 19);
         $statment->execute();
 
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
