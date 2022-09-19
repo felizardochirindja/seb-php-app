@@ -26,15 +26,9 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->bindParam(':status', $status);
         $statment->execute();
 
-        $insertedTicketId = $this->getLastTicketInsertdId();
+        $insertedTicketId = $this->connection->lastInsertId();
         $ticket = $this->readTicketById($insertedTicketId);
         return $ticket;
-    }
-
-    private function getLastTicketInsertdId(): int
-    {
-        $ticketId = $this->connection->lastInsertId();
-        return $ticketId;
     }
 
     public function readTicketById(int $id): array
