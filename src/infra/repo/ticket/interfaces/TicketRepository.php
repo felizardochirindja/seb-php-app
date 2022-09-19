@@ -7,4 +7,5 @@ use DateTimeInterface as DateTime;
 interface TicketRepository
 {
     public function createTicket(DateTime $emitionMoment, int $code, string $status): array;
+    public function readLastInsertedTicket(): array;
 }
