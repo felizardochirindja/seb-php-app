@@ -12,24 +12,25 @@ final class EmitTicketUseCase
 {
     public function __construct(
         private TicketRepository $repository,
-        private TicketEntity $ticket,
         private TicketPDFGenerator $pdfGenerator,
     ) {}
 
     public function execute(): EmitTicketOutput
     {
         $ticketCode = (int) $this->repository->readLastInsertedTicket()['code'];
-        $this->ticket->setCode(++$ticketCode)
+
+        $ticket = new TicketEntity();
+        $ticket->setCode(++$ticketCode)
             ->setStatus('pending')
             ->setEmitionMoment(new DateTime());
-
-        $ticket = $this->repository->createTicket(
-            $this->ticket->getEmitionMoment(),
-            $this->ticket->getCode(),
-            $this->ticket->getStatus(),
+            
+        $insertedTicket = $this->repository->createTicket(
+            $ticket->getEmitionMoment(),
+            $ticket->getCode(),
+            $ticket->getStatus(),
         );
 
-        $pdfCode = $this->pdfGenerator->generate($ticket);
+        $pdfCode = $this->pdfGenerator->generate($insertedTicket);
         $emitTicketOutput = new EmitTicketOutput($ticket['code'], $pdfCode);
         return $emitTicketOutput;
     }
