@@ -10,8 +10,6 @@ final class TicketEntity
     private DateTime $emitionMoment;
     private int $code;
     private string $status;
-    private string $companyName = 'farmácia';
-    private string $messageForClient = 'seja paciente';
 
     public function getEmitionMoment(): DateTime
     {
@@ -22,16 +20,6 @@ final class TicketEntity
     {
         $this->emitionMoment = $emitionMoment;
         return $this;
-    }
-
-    public function getMessageForClient(): string
-    {
-        return $this->messageForClient;
-    }
-
-    public function getCompanyName(): string
-    {
-        return $this->companyName;
     }
 
     public function getCode(): int
