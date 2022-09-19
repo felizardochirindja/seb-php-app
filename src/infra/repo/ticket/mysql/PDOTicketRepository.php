@@ -5,9 +5,9 @@ namespace Seb\Infra\Repo\Ticket\MySQL;
 use DateTimeInterface as DateTime;
 use PDO;
 use Seb\Infra\Repo\Interfaces\PDORepository;
-use Seb\Infra\Repo\Ticket\Interfaces\CreateTicketRepository;
+use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 
-final class PDOTicketRepository extends PDORepository implements CreateTicketRepository
+final class PDOTicketRepository extends PDORepository implements TicketRepository
 {
     public function createTicket(DateTime $emitionMoment, int $code, string $status): array
     {
