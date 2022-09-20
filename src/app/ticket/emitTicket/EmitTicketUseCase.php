@@ -31,7 +31,7 @@ final class EmitTicketUseCase
         );
 
         $pdfCode = $this->pdfGenerator->generate($insertedTicket);
-        $emitTicketOutput = new EmitTicketOutput($ticket['code'], $pdfCode);
+        $emitTicketOutput = new EmitTicketOutput($insertedTicket['code'], $pdfCode);
         return $emitTicketOutput;
     }
 }
