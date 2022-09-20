@@ -48,13 +48,10 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
     public function readLastInsertedTicket(): array
     {
         $query = '
-            select * from tickets where id = :id;
+            select * from tickets order by id desc limit 1;
         ';
 
-        $ticketId = $this->connection->lastInsertId();
-
         $statment = $this->connection->prepare($query);
-        $statment->bindValue(':id', 19);
         $statment->execute();
 
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
