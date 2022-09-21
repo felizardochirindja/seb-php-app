@@ -13,5 +13,7 @@
             "email": "felizardo.chirindja@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "dompdf/dompdf": "^2.0",
+    }
 }
