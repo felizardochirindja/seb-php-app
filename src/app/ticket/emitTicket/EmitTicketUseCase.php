@@ -3,6 +3,7 @@
 namespace Seb\App\Ticket\EmitTicket;
 
 use DateTime;
+use DateTimeImmutable;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
 use Seb\App\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
@@ -29,6 +30,14 @@ final class EmitTicketUseCase
             $ticket->getCode(),
             $ticket->getStatus(),
         );
+
+        $ticketEmitionMoment = $insertedTicket['emition_moment'];
+        unset($insertedTicket['emition_moment']);
+        $ticketEmitionMoment = new DateTimeImmutable($ticketEmitionMoment);
+
+        $insertedTicket['date'] = $ticketEmitionMoment->format('d/m/Y');
+        $insertedTicket['time'] = $ticketEmitionMoment->format('H:i:s');
+        $insertedTicket['message'] = 'obedeça a fila...';
 
         $pdfCode = $this->pdfGenerator->generate($insertedTicket);
         $emitTicketOutput = new EmitTicketOutput($insertedTicket['code'], $pdfCode);
