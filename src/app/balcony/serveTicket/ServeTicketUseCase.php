@@ -19,7 +19,7 @@ final class ServeTicketUseCase
 
     public function execute(int $balconyId): bool
     {
-        $FirstpendingTicket = $this->ticketRepo->readFirstPendingTicketByStatus('pending');
+        $FirstpendingTicket = $this->ticketRepo->readFirstTicketByStatus('pending');
 
         $startMoment = new DateTimeImmutable();
         $this->balconyRepo->createBalconyService($FirstpendingTicket['id'], $balconyId, $startMoment);
