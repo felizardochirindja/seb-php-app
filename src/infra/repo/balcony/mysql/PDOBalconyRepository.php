@@ -29,6 +29,14 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
 
     public function updateBalconyStatus(int $balconyNumber, string $balconyStatus): bool
     {
-        return false;
+        $query = '
+            update balconies set status = :status where number = :number;
+        ';
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindParam(':status', $balconyStatus);
+        $statment->bindParam(':number', $balconyNumber);
+
+        return $statment->execute();
     }
 }
