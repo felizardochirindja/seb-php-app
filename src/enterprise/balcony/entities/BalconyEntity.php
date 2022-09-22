@@ -50,7 +50,8 @@ final class BalconyEntity
     {
         if (
             $status !== 'not in service' &&
-            $status !== 'in service'
+            $status !== 'in service' &&
+            $status !== 'inactive'
         ) {
             throw new DomainException("status must be only: in service, not in service", 1);
         }
