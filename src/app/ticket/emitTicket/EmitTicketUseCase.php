@@ -39,8 +39,12 @@ final class EmitTicketUseCase
         $insertedTicket['time'] = $ticketEmitionMoment->format('H:i:s');
         $insertedTicket['message'] = 'obedeça a fila...';
 
-        $pdfCode = $this->pdfGenerator->generate($insertedTicket);
-        $emitTicketOutput = new EmitTicketOutput($insertedTicket['code'], $pdfCode);
+        $emitTicketOutput = new EmitTicketOutput(
+            $insertedTicket['code'],
+            $pdfCode,
+            $insertedTicket['date'],
+            $insertedTicket['time']
+        );
         return $emitTicketOutput;
     }
 }
