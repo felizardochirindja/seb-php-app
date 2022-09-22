@@ -8,6 +8,6 @@ interface TicketRepository
 {
     public function createTicket(DateTime $emitionMoment, int $code, string $status): array;
     public function readLastInsertedTicket(): array;
-    public function readFirstTicketByStatus(string $balconyStatus): array;
+    public function readFirstTicketByStatus(string $ticketStatus): array;
     public function updateTicketStatus(string $ticketId, string $ticketStatus): bool;
 }
