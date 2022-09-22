@@ -3,6 +3,7 @@
 namespace Seb\Infra\Adapters\Ticket\PDFGenerator\DomPDF;
 
 use Dompdf\Dompdf;
+use Seb\Infra\Adapters\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
 
 class DomPDFTicketGeneratorAdapter implements TicketPDFGenerator
@@ -11,7 +12,7 @@ class DomPDFTicketGeneratorAdapter implements TicketPDFGenerator
         private Dompdf $dompdf,
     ){}
 
-    public function generate(array $ticketData): string
+    public function generate(GenerateTicketPDFInput $ticketData): string
     {
         $this->dompdf->loadHtml('hello world');
         $this->dompdf->setPaper('A4', 'landscape');
