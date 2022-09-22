@@ -16,5 +16,11 @@
     "require": {
         "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.5"
+    },
+    "scripts": {
+        "server": "php -S localhost:8080 -t public"
+    },
+    "config": {
+        "process-timeout": 0
     }
 }
