@@ -17,18 +17,18 @@ final class ServeTicketUseCase
         private BalconyEntity $balcony,
     ) {}
 
-    public function execute(int $balconyId): bool
+    public function execute(int $balconyNumber): bool
     {
-        $FirstpendingTicket = $this->ticketRepo->readFirstTicketByStatus('pending');
+        $firstPendingTicket = $this->ticketRepo->readFirstTicketByStatus('pending');
 
         $startMoment = new DateTimeImmutable();
-        $this->balconyRepo->createBalconyService($FirstpendingTicket['id'], $balconyId, $startMoment);
+        $this->balconyRepo->createBalconyService($firstPendingTicket['id'], $balconyNumber, $startMoment);
 
         $balconyStatus = $this->balcony->setStatus('in service')->getStatus();
-        $this->balconyRepo->updateBalconyStatus($balconyId, $balconyStatus);
+        $this->balconyRepo->updateBalconyStatus($balconyNumber, $balconyStatus);
 
         $ticketStatus = $this->ticket->setStatus('in service')->getStatus();
-        $this->ticketRepo->updateTicketStatus($FirstpendingTicket['id'], $ticketStatus);
+        $this->ticketRepo->updateTicketStatus($firstPendingTicket['id'], $ticketStatus);
 
         return true;
     }
