@@ -6,6 +6,6 @@ use DateTimeInterface;
 
 interface BalconyRepository
 {
-    public function createBalconyService(int $ticketId, int $balconyId, DateTimeInterface $startMoment): bool;
-    public function updateBalconyStatus(int $balconyId, string $balconyStatus): bool;
+    public function createBalconyService(int $ticketId, int $balconyNumber, DateTimeInterface $startMoment): bool;
+    public function updateBalconyStatus(int $balconyNumber, string $balconyStatus): bool;
 }
