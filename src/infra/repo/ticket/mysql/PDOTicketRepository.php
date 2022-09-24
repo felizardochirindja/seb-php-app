@@ -71,4 +71,17 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
         return $ticket;
     }
+
+    public function updateTicketStatus(string $ticketId, string $ticketStatus): bool
+    {
+        $query = '
+            update tickets set status = :status where id = :id;
+        ';
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindParam(':status', $ticketStatus);
+        $statment->bindParam(':id', $ticketId);
+
+        return $statment->execute();
+    }
 }
