@@ -3,6 +3,7 @@
 namespace Seb\Infra\Repo\Balcony\MySQL;
 
 use DateTimeInterface;
+use PDO;
 use Seb\Infra\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Infra\Repo\Interfaces\PDORepository;
 
@@ -36,6 +37,26 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':status', $balconyStatus);
         $statment->bindParam(':number', $balconyNumber);
+
+        return $statment->execute();
+    }
+
+    public function setEndServiceMoment(int $ticketId,int $balconyNumber, DateTimeInterface $endMoment): bool
+    {
+        $query = '
+            update services set
+                end_moment = :end_moment
+            where
+                ticket_id = :ticket_id and
+                balcony_number = :balcony_number;
+        ';
+
+        $endMoment = $endMoment->format('Y-m-d H:i:s');
+        
+        $statment = $this->connection->prepare($query);
+        $statment->bindParam(':end_moment', $endMoment);
+        $statment->bindValue(':ticket_id', $ticketId);
+        $statment->bindParam(':balcony_number', $balconyNumber);
 
         return $statment->execute();
     }
