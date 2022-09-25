@@ -10,4 +10,5 @@ interface TicketRepository
     public function readLastInsertedTicket(): array;
     public function readFirstTicketByStatus(string $ticketStatus): array;
     public function updateTicketStatus(string $ticketId, string $ticketStatus): bool;
+    public function readServiceByBalconyNumberAndStatus(int $balconyNumber,string $ticketStatus): array;
 }
