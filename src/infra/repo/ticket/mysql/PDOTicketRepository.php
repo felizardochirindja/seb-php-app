@@ -84,4 +84,22 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
 
         return $statment->execute();
     }
+
+    public function readServiceByBalconyNumberAndStatus(int $balconyNumber, string $ticketStatus): array
+    {
+        $query = '
+            select * from tickets t
+                join services s
+                on t.id = s.ticket_id
+            where s.balcony_number = :balcony_number and t.status = :ticket_status;
+        ';
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindParam(':ticket_status', $ticketStatus);
+        $statment->bindParam(':balcony_number', $balconyNumber);
+        $statment->execute();
+
+        $service = $statment->fetch(PDO::FETCH_ASSOC);
+        return $service;
+    }
 }
