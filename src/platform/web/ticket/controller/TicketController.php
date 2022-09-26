@@ -5,7 +5,6 @@ namespace Seb\Platform\Web\Ticket\Controller;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Seb\App\Ticket\EmitTicket\EmitTicketUseCase;
-use Seb\Platform\Presenters\Interfaces\TicketPresenterInterface as TicketPresenter;
 
 final class TicketController
 {
@@ -15,16 +14,11 @@ final class TicketController
         private EmitTicketUseCase $useCase,
     ) {}
 
-    public function emitTicket(TicketPresenter $presenter)
+    public function emitTicket()
     {
         $output = $this->useCase->execute();
 
-        $body = $presenter->outputPDF([
-            'pdf_code' => $output->pdfCode,
-            'ticket_code' => $output->ticketCode,
-        ]);
-
         header("Content-Type: application/pdf; charset=UTF-8");
-        echo $body;
+        echo $output->pdfCode;
     }
 }
