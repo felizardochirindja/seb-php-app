@@ -19,7 +19,8 @@ final class EmitTicketUseCase
 
     public function execute(): EmitTicketOutput
     {
-        $ticketCode = (int) $this->repository->readLastInsertedTicket()['code'];
+        $ticket = $this->repository->readLastInsertedTicket();
+        $ticketCode = empty($ticket) ? 99 : $ticket['code'];
 
         $ticket = new TicketEntity();
         $ticket->setCode(++$ticketCode)
