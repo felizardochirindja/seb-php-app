@@ -60,4 +60,17 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
 
         return $statment->execute();
     }
+
+    public function readBalconyStatus(int $balconyNumber): string
+    {
+        $query = '
+            select status from balconies where number = :number;
+        ';
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindParam(':number', $balconyNumber);
+
+        $statment->execute();
+        return $statment->fetch(PDO::FETCH_ASSOC)['status'];
+    }
 }
