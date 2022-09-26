@@ -4,12 +4,13 @@ namespace Seb\Infra\Repo\Ticket\MySQL;
 
 use DateTimeInterface as DateTime;
 use PDO;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
 use Seb\Infra\Repo\Interfaces\PDORepository;
 use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 
 final class PDOTicketRepository extends PDORepository implements TicketRepository
 {
-    public function createTicket(DateTime $emitionMoment, int $code, string $status): array
+    public function createTicket(DateTime $emitionMoment, int $code, TicketStatus $status): array
     {
         $query = '
             insert into tickets set
@@ -59,7 +60,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         return (array) $ticket;
     }
 
-    public function readFirstTicketByStatus(string $ticketStatus): array
+    public function readFirstTicketByStatus(TicketStatus $ticketStatus): array
     {
         $query = '
             select * from tickets where status = :status limit 1;
@@ -73,7 +74,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         return $ticket;
     }
 
-    public function updateTicketStatus(string $ticketId, string $ticketStatus): bool
+    public function updateTicketStatus(int $ticketId, TicketStatus $ticketStatus): bool
     {
         $query = '
             update tickets set status = :status where id = :id;
@@ -86,7 +87,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         return $statment->execute();
     }
 
-    public function readServiceByBalconyNumberAndStatus(int $balconyNumber, string $ticketStatus): array
+    public function readServiceByBalconyNumberAndStatus(int $balconyNumber, TicketStatus $ticketStatus): array
     {
         $query = '
             select * from tickets t

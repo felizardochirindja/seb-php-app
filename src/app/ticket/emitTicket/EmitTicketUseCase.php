@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
 use Seb\App\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
 use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 
@@ -23,8 +24,9 @@ final class EmitTicketUseCase
         $ticketCode = empty($ticket) ? 99 : $ticket['code'];
 
         $ticket = new TicketEntity();
+        $ticketStatus = new TicketStatus('pending');
         $ticket->setCode(++$ticketCode)
-            ->setStatus('pending')
+            ->setStatus($ticketStatus)
             ->setEmitionMoment(new DateTime());
             
         $insertedTicket = $this->repository->createTicket(

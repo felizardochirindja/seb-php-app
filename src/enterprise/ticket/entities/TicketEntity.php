@@ -4,12 +4,13 @@ namespace Seb\Enterprise\Ticket\Entities;
 
 use DateTime;
 use DomainException;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
 
 final class TicketEntity
 {
     private DateTime $emitionMoment;
     private int $code;
-    private string $status;
+    private TicketStatus $status;
 
     public function getEmitionMoment(): DateTime
     {
@@ -37,21 +38,13 @@ final class TicketEntity
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): TicketStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status)
+    public function setStatus(TicketStatus $status): self
     {
-        if (
-            $status !== 'pending' &&
-            $status !== 'in service' &&
-            $status !== 'attended'
-        ) {
-            throw new DomainException("status must be only: pending, in service, attended", 1);
-        }
-
         $this->status = $status;
         return $this;
     }

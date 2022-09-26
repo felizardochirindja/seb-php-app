@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Exception;
 use Seb\Enterprise\Balcony\Entities\BalconyEntity;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
 use Seb\Infra\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 
@@ -25,7 +26,7 @@ final class ServeTicketUseCase
         if ($actualBalconyStatus === 'in service') throw new Exception('balcony ' . $balconyNumber . ' is already in service');
         if ($actualBalconyStatus === 'inactive') throw new Exception('inactive ' . $balconyNumber . ' is not active');
 
-        $firstPendingTicket = $this->ticketRepo->readFirstTicketByStatus('pending');
+        $firstPendingTicket = $this->ticketRepo->readFirstTicketByStatus(new TicketStatus('pending'));
 
         $startMoment = new DateTimeImmutable();
         $this->balconyRepo->createBalconyService($firstPendingTicket['id'], $balconyNumber, $startMoment);
@@ -33,7 +34,7 @@ final class ServeTicketUseCase
         $balconyStatus = $this->balcony->setStatus('in service')->getStatus();
         $this->balconyRepo->updateBalconyStatus($balconyNumber, $balconyStatus);
 
-        $ticketStatus = $this->ticket->setStatus('in service')->getStatus();
+        $ticketStatus = $this->ticket->setStatus(new TicketStatus('in service'))->getStatus();
         $this->ticketRepo->updateTicketStatus($firstPendingTicket['id'], $ticketStatus);
 
         return true;

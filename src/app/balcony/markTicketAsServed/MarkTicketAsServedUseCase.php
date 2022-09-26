@@ -22,12 +22,12 @@ final class MarkTicketAsServedUseCase
         $balconyStatus = $this->balcony->setStatus('not in service')->getStatus();
         $this->balconyRepo->updateBalconyStatus($balconyNumber, $balconyStatus);
 
-        $ticketStatus = $this->ticket->setStatus('in service')->getStatus();
+        $ticketStatus = $this->ticket->setStatus(new TicketStatus('in service'))->getStatus();
         $ticketId = $this->ticketRepo->readServiceByBalconyNumberAndStatus($balconyNumber, $ticketStatus)['id'];
 
         $this->balconyRepo->setEndServiceMoment($ticketId, $balconyNumber, new DateTime());
 
-        $ticketStatus = $this->ticket->setStatus('attended')->getStatus();
+        $ticketStatus = $this->ticket->setStatus(new TicketStatus('attended'))->getStatus();
         $this->ticketRepo->updateTicketStatus($ticketId, $ticketStatus);
 
         return true;
