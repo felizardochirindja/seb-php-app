@@ -71,6 +71,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
+        if ($statment->rowCount() === 0) return [];
         return $ticket;
     }
 
@@ -102,6 +103,8 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $service = $statment->fetch(PDO::FETCH_ASSOC);
+
+        if ($statment->rowCount() === 0) return [];
         return $service;
     }
 }
