@@ -20,8 +20,8 @@ final class ServeTicketUseCase
     {
         $actualBalconyStatus = $this->balconyRepo->readBalconyStatus($balconyNumber);
 
-        if ($actualBalconyStatus === 'in service') throw new Exception('balcony ' . $balconyNumber . ' is already in service');
-        if ($actualBalconyStatus === 'inactive') throw new Exception('inactive ' . $balconyNumber . ' is not active');
+        if ($actualBalconyStatus == 'in service') throw new Exception('balcony ' . $balconyNumber . ' is already in service');
+        if ($actualBalconyStatus == 'inactive') throw new Exception('inactive ' . $balconyNumber . ' is not active');
 
         $firstPendingTicket = $this->ticketRepo->readFirstTicketByStatus(new TicketStatus('pending'));
         
