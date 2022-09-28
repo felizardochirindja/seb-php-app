@@ -11,12 +11,12 @@ final class TicketController
     public function __construct(
         private Request $request,
         private Response $response,
-        private EmitTicketUseCase $useCase,
     ) {}
 
-    public function emitTicket()
-    {
-        $output = $this->useCase->execute();
+    public function emitTicket(
+        EmitTicketUseCase $useCase,
+    ) {
+        $output = $useCase->execute();
 
         header("Content-Type: application/pdf; charset=UTF-8");
         echo $output->pdfCode;
