@@ -107,4 +107,19 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         if ($statment->rowCount() === 0) return [];
         return $service;
     }
+
+    public function readTicketsByStatus(TicketStatus $ticketStatus): array
+    {
+        $query = '
+            select * from tickets where status = :status;
+        ';
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindParam(':status', $ticketStatus);
+        $statment->execute();
+
+        $tickets = $statment->fetch(PDO::FETCH_ASSOC);
+        if ($statment->rowCount() === 0) return [];
+        return $tickets;
+    }
 }

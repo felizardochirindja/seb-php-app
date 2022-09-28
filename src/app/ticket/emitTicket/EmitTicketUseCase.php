@@ -20,6 +20,8 @@ final class EmitTicketUseCase
 
     public function execute(): EmitTicketOutput
     {
+        $ticketsFollowing = $this->repository->readTicketsByStatus(new TicketStatus('pending'));
+
         $ticket = $this->repository->readLastInsertedTicket();
         $ticketCode = empty($ticket) ? 99 : $ticket['code'];
 
