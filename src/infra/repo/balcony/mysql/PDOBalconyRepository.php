@@ -3,7 +3,9 @@
 namespace Seb\Infra\Repo\Balcony\MySQL;
 
 use DateTimeInterface;
+use Exception;
 use PDO;
+use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusValueObject as BalconyStatus;
 use Seb\Infra\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Infra\Repo\Interfaces\PDORepository;
 
@@ -28,7 +30,7 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         return $statment->execute();
     }
 
-    public function updateBalconyStatus(int $balconyNumber, string $balconyStatus): bool
+    public function updateBalconyStatus(int $balconyNumber, BalconyStatus $balconyStatus): bool
     {
         $query = '
             update balconies set status = :status where number = :number;
@@ -61,7 +63,7 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         return $statment->execute();
     }
 
-    public function readBalconyStatus(int $balconyNumber): string
+    public function readBalconyStatus(int $balconyNumber): BalconyStatus
     {
         $query = '
             select status from balconies where number = :number;
@@ -71,6 +73,9 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         $statment->bindParam(':number', $balconyNumber);
 
         $statment->execute();
-        return $statment->fetch(PDO::FETCH_ASSOC)['status'];
+        $balcony = $statment->fetch(PDO::FETCH_ASSOC);
+        if (is_bool($balcony)) throw new Exception("balcony " . $balconyNumber . ' not found!', 1);
+
+        return new BalconyStatus($balcony['status']);
     }
 }

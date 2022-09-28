@@ -3,12 +3,13 @@
 namespace Seb\Enterprise\Balcony\Entities;
 
 use DomainException;
+use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusValueObject as BalconyStatus;
 
 final class BalconyEntity
 {
     private string $attendantName;
     private int $number;
-    private string $status;
+    private BalconyStatus $status;
  
     public function getName(): string
     {
@@ -41,21 +42,13 @@ final class BalconyEntity
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): BalconyStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status)
+    public function setStatus(BalconyStatus $status): self
     {
-        if (
-            $status !== 'not in service' &&
-            $status !== 'in service' &&
-            $status !== 'inactive'
-        ) {
-            throw new DomainException("status must be only: in service, not in service", 1);
-        }
-
         $this->status = $status;
         return $this;
     }
