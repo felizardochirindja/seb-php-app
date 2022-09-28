@@ -14,8 +14,6 @@ final class ServeTicketUseCase
     public function __construct(
         private TicketRepository $ticketRepo,
         private BalconyRepository $balconyRepo,
-        private TicketEntity $ticket,
-        private BalconyEntity $balcony,
     ) {}
 
     public function execute(int $balconyNumber): bool
