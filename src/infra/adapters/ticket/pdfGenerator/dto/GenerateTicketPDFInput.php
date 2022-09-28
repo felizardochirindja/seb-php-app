@@ -9,5 +9,6 @@ final class GenerateTicketPDFInput
         public string $date,
         public string $time,
         public string $message,
+        public string $ticketsFollowing,
     ) {}
 }

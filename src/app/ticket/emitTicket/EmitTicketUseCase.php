@@ -51,6 +51,7 @@ final class EmitTicketUseCase
                 $insertedTicket['date'],
                 $insertedTicket['time'],
                 $insertedTicket['message'],
+                count($ticketsFollowing),
             )
         );
         
