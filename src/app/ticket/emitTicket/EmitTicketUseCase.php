@@ -14,15 +14,15 @@ use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 final class EmitTicketUseCase
 {
     public function __construct(
-        private TicketRepository $repository,
+        private TicketRepository $ticketRepository,
         private TicketPDFGenerator $pdfGenerator,
     ) {}
 
     public function execute(): EmitTicketOutput
     {
-        $ticketsFollowing = $this->repository->readTicketsByStatus(new TicketStatus('pending'));
+        $ticketsFollowing = $this->ticketRepository->readTicketsByStatus(new TicketStatus('pending'));
 
-        $ticket = $this->repository->readLastInsertedTicket();
+        $ticket = $this->ticketRepository->readLastInsertedTicket();
         $ticketCode = empty($ticket) ? 99 : $ticket['code'];
 
         $ticket = new TicketEntity();
@@ -31,7 +31,7 @@ final class EmitTicketUseCase
             ->setStatus($ticketStatus)
             ->setEmitionMoment(new DateTime());
             
-        $insertedTicket = $this->repository->createTicket(
+        $insertedTicket = $this->ticketRepository->createTicket(
             $ticket->getEmitionMoment(),
             $ticket->getCode(),
             $ticket->getStatus(),
