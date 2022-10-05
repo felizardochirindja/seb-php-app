@@ -4,22 +4,28 @@ namespace Seb\App\Ticket\EmitTicket;
 
 use DateTime;
 use DateTimeImmutable;
+use Exception;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
 use Seb\App\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
+use Seb\Infra\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 
 final class EmitTicketUseCase
 {
     public function __construct(
         private TicketRepository $ticketRepository,
+        private BalconyRepository $balconyRepository,
         private TicketPDFGenerator $pdfGenerator,
     ) {}
 
     public function execute(): EmitTicketOutput
     {
+        $isSomeBalconyActive = $this->balconyRepository->verifyActiveBalconies();
+        if (!$isSomeBalconyActive) throw new Exception('there is no any active balcony');
+
         $ticketsFollowing = $this->ticketRepository->readTicketsByStatus(new TicketStatus('pending'));
 
         $ticket = $this->ticketRepository->readLastInsertedTicket();

@@ -78,4 +78,19 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
 
         return new BalconyStatus($balcony['status']);
     }
+
+    public function verifyActiveBalconies(): bool
+    {
+        $query = '
+            select * from balconies where status = :first_status or status = :second_status;
+        ';
+
+        $statment = $this->connection->prepare($query);
+        $statment->bindValue(':first_status', 'not in service');
+        $statment->bindValue(':second_status', 'in service');
+
+        $statment->execute();
+        $activeBalconiesNumber = $statment->rowCount();
+        return ($activeBalconiesNumber < 1) ? false : true;
+    }
 }

@@ -11,4 +11,5 @@ interface BalconyRepository
     public function updateBalconyStatus(int $balconyNumber, BalconyStatus $balconyStatus): bool;
     public function setEndServiceMoment(int $ticketId,int $balconyNumber, DateTimeInterface $endMoment): bool;
     public function readBalconyStatus(int $balconyNumber): BalconyStatus;
+    public function verifyActiveBalconies(): bool;
 }
