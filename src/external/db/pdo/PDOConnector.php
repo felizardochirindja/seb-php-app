@@ -1,6 +1,6 @@
 <?php
 
-namespace Seb\Infra\DB\PDO;
+namespace Seb\External\DB\PDO;
 
 use PDO;
 

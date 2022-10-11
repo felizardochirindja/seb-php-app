@@ -1,10 +1,10 @@
 <?php
 
-namespace Seb\Infra\DB\PDO\MySQL;
+namespace Seb\External\DB\PDO\MySQL;
 
 use PDO;
 use PDOException;
-use Seb\Infra\DB\PDO\PDOConnector;
+use Seb\External\DB\PDO\PDOConnector;
 
 final class MySQLPDOConnector extends PDOConnector
 {
