@@ -14,8 +14,11 @@
         }
     ],
     "require": {
+        "php": "^8.0",
         "dompdf/dompdf": "^2.0",
-        "guzzlehttp/guzzle": "^7.5"
+        "slim/slim": "^4.10",
+        "slim/psr7": "^1.5",
+        "php-di/php-di": "^6.4"
     },
     "scripts": {
         "server": "php -S localhost:8080 -t public"
