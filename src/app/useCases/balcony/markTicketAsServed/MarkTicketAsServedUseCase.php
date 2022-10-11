@@ -1,6 +1,6 @@
 <?php
 
-namespace Seb\App\Balcony\MarkTicketAsServed;
+namespace Seb\App\UseCases\Balcony\MarkTicketAsServed;
 
 use DateTime;
 use Exception;

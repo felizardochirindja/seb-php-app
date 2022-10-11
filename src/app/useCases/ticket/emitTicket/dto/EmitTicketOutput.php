@@ -1,6 +1,6 @@
 <?php
 
-namespace Seb\App\Ticket\EmitTicket\DTO;
+namespace Seb\App\UseCases\Ticket\EmitTicket\DTO;
 
 final class EmitTicketOutput
 {

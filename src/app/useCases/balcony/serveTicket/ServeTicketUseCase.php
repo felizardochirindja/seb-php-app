@@ -1,6 +1,6 @@
 <?php
 
-namespace Seb\App\Balcony\ServeTicket;
+namespace Seb\App\UseCases\Balcony\ServeTicket;
 
 use DateTimeImmutable;
 use Exception;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Seb\App\Ticket\EmitTicket;
+namespace Seb\App\UseCases\Ticket\EmitTicket;
 
 use DateTime;
 use DateTimeImmutable;
