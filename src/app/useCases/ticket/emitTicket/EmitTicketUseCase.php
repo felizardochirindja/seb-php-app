@@ -6,7 +6,7 @@ use DateTime;
 use DateTimeImmutable;
 use Exception;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
-use Seb\App\Ticket\EmitTicket\DTO\EmitTicketOutput;
+use Seb\App\UseCases\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
 use Seb\Infra\Adapters\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
