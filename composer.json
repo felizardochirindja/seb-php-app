@@ -21,7 +21,7 @@
         "php-di/php-di": "^6.4"
     },
     "scripts": {
-        "server": "php -S localhost:8080 -t public"
+        "server": "php81 -S localhost:8080 -t public"
     },
     "config": {
         "process-timeout": 0
