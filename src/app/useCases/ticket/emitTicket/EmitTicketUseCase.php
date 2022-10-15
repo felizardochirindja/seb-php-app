@@ -5,13 +5,14 @@ namespace Seb\App\UseCases\Ticket\EmitTicket;
 use DateTime;
 use DateTimeImmutable;
 use Exception;
-use Seb\Infra\Adapters\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
+use Seb\Adapters\Libs\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
+use Seb\Adapters\Libs\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
+use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
+use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\App\UseCases\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
-use Seb\Infra\Adapters\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
-use Seb\Infra\Repo\Balcony\Interfaces\BalconyRepository;
-use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
+
 
 final class EmitTicketUseCase
 {

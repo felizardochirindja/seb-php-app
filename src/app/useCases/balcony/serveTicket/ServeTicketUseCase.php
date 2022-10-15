@@ -4,10 +4,10 @@ namespace Seb\App\UseCases\Balcony\ServeTicket;
 
 use DateTimeImmutable;
 use Exception;
+use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
+use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusValueObject as BalconyStatus;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
-use Seb\Infra\Repo\Balcony\Interfaces\BalconyRepository;
-use Seb\Infra\Repo\Ticket\Interfaces\TicketRepository;
 
 final class ServeTicketUseCase
 {
