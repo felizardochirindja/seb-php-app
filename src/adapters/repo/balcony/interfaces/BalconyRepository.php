@@ -3,7 +3,7 @@
 namespace Seb\Adapters\Repo\Balcony\Interfaces;
 
 use DateTimeInterface;
-use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusValueObject as BalconyStatus;
+use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum as BalconyStatus;
 
 interface BalconyRepository
 {

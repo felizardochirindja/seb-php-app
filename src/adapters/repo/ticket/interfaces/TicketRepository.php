@@ -3,7 +3,7 @@
 namespace Seb\Adapters\Repo\Ticket\Interfaces;
 
 use DateTimeInterface as DateTime;
-use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
 
 interface TicketRepository
 {

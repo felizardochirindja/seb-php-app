@@ -6,7 +6,7 @@ use DateTimeInterface as DateTime;
 use PDO;
 use Seb\Adapters\Repo\Interfaces\PDORepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
-use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
 
 final class PDOTicketRepository extends PDORepository implements TicketRepository
 {
@@ -20,6 +20,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         ';
 
         $formatetEmitionMoment = $emitionMoment->format('Y-m-d H:i:s');
+        $status = $status->value;
 
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':code', $code);
@@ -66,6 +67,8 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
             select * from tickets where status = :status limit 1;
         ';
 
+        $ticketStatus = $ticketStatus->value;
+
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':status', $ticketStatus);
         $statment->execute();
@@ -80,6 +83,8 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $query = '
             update tickets set status = :status where id = :id;
         ';
+
+        $ticketStatus = $ticketStatus->value;
 
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':status', $ticketStatus);
@@ -97,6 +102,8 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
             where s.balcony_number = :balcony_number and t.status = :ticket_status;
         ';
 
+        $ticketStatus = $ticketStatus->value;
+
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':ticket_status', $ticketStatus);
         $statment->bindParam(':balcony_number', $balconyNumber);
@@ -113,6 +120,8 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $query = '
             select * from tickets where status = :status;
         ';
+
+        $ticketStatus = $ticketStatus->value;
 
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':status', $ticketStatus);

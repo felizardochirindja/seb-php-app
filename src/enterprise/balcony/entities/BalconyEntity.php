@@ -3,7 +3,7 @@
 namespace Seb\Enterprise\Balcony\Entities;
 
 use DomainException;
-use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusValueObject as BalconyStatus;
+use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum as BalconyStatus;
 
 final class BalconyEntity
 {

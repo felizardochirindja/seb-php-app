@@ -7,7 +7,7 @@ use Exception;
 use PDO;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Interfaces\PDORepository;
-use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusValueObject as BalconyStatus;
+use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum as BalconyStatus;
 
 final class PDOBalconyRepository extends PDORepository implements BalconyRepository
 {
@@ -35,6 +35,8 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         $query = '
             update balconies set status = :status where number = :number;
         ';
+
+        $balconyStatus = $balconyStatus->value;
 
         $statment = $this->connection->prepare($query);
         $statment->bindParam(':status', $balconyStatus);
@@ -76,7 +78,7 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         $balcony = $statment->fetch(PDO::FETCH_ASSOC);
         if (is_bool($balcony)) throw new Exception("balcony " . $balconyNumber . ' not found!', 1);
 
-        return new BalconyStatus($balcony['status']);
+        return BalconyStatus::from($balcony['status']);
     }
 
     public function verifyActiveBalconies(): bool

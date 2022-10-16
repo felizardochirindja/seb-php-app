@@ -11,7 +11,7 @@ use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\App\UseCases\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
-use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
 
 
 final class EmitTicketUseCase
@@ -27,15 +27,14 @@ final class EmitTicketUseCase
         $isSomeBalconyActive = $this->balconyRepository->verifyActiveBalconies();
         if (!$isSomeBalconyActive) throw new Exception('there is no any active balcony');
 
-        $ticketsFollowing = $this->ticketRepository->readTicketsByStatus(new TicketStatus('pending'));
+        $ticketsFollowing = $this->ticketRepository->readTicketsByStatus(TicketStatus::Pending);
 
         $ticket = $this->ticketRepository->readLastInsertedTicket();
         $ticketCode = empty($ticket) ? 99 : $ticket['code'];
 
         $ticket = new TicketEntity();
-        $ticketStatus = new TicketStatus('pending');
         $ticket->setCode(++$ticketCode)
-            ->setStatus($ticketStatus)
+            ->setStatus(TicketStatus::Pending)
             ->setEmitionMoment(new DateTime());
             
         $insertedTicket = $this->ticketRepository->createTicket(

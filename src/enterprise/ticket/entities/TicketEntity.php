@@ -4,7 +4,7 @@ namespace Seb\Enterprise\Ticket\Entities;
 
 use DateTime;
 use DomainException;
-use Seb\Enterprise\Ticket\ValueObjects\TicketStatusValueObject as TicketStatus;
+use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
 
 final class TicketEntity
 {
