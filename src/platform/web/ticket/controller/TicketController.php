@@ -2,17 +2,12 @@
 
 namespace Seb\Platform\Web\Ticket\Controller;
 
-use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Seb\App\UseCases\Ticket\EmitTicket\EmitTicketUseCase;
+use Seb\Platform\Web\BaseController;
 
-final class TicketController
+final class TicketController extends BaseController
 {
-    public function __construct(
-        private Request $request,
-        private Response $response,
-    ) {}
-
     public function emitTicket(
         EmitTicketUseCase $useCase,
     ): Response
