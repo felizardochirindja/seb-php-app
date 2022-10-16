@@ -5,10 +5,10 @@ namespace Seb\Adapters\Libs\Ticket\PDFGenerator\DTO;
 final class GenerateTicketPDFInput
 {
     public function __construct(
-        public int $ticketCode,
-        public string $date,
-        public string $time,
-        public string $message,
-        public string $ticketsFollowing,
+        public readonly int $ticketCode,
+        public readonly string $date,
+        public readonly string $time,
+        public readonly string $message,
+        public readonly string $ticketsFollowing,
     ) {}
 }
