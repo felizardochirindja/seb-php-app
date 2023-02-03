@@ -5,6 +5,7 @@ namespace Seb\App\UseCases\Balcony\MarkTicketAsServed;
 use DateTime;
 use Exception;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
+use Seb\Adapters\Repo\Service\Interfaces\ServiceRepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum as BalconyStatus;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
@@ -14,6 +15,7 @@ final class MarkTicketAsServedUseCase
     public function __construct(
         private TicketRepository $ticketRepo,
         private BalconyRepository $balconyRepo,
+        private ServiceRepository $serviceRepo,
     ) {}
 
     public function execute(int $balconyNumber): bool
@@ -24,11 +26,11 @@ final class MarkTicketAsServedUseCase
 
         $this->balconyRepo->updateBalconyStatus($balconyNumber, BalconyStatus::NotInService);
 
-        $ticket = $this->ticketRepo->readServiceByBalconyNumberAndStatus($balconyNumber, TicketStatus::InService);
+        $ticket = $this->serviceRepo->readServiceByBalconyNumberAndStatus($balconyNumber, TicketStatus::InService);
         if (empty($ticket)) throw new Exception('service with balcony ' . $balconyNumber . ' not found', 1);
 
         $ticketId = $ticket['id'];
-        $this->balconyRepo->setEndServiceMoment($ticketId, $balconyNumber, new DateTime());
+        $this->serviceRepo->setEndServiceMoment($ticketId, $balconyNumber, new DateTime());
         $this->ticketRepo->updateTicketStatus($ticketId, TicketStatus::Attended);
 
         return true;

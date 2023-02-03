@@ -10,20 +10,28 @@ use Seb\Adapters\Repo\Ticket\MySQL\PDOTicketRepository;
 use Seb\App\UseCases\Ticket\EmitTicket\EmitTicketUseCase;
 use Seb\Platform\Web\Ticket\Controller\TicketController;
 use Slim\App;
+use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
-    $app->get('/emit_ticket', function (Request $request, Response $response, $args) {
-        $mysqlConnector = new MySQLPDOConnector('mysql:host=localhost;dbname=seb', 'root', '');
+    $app->group('/ticket', function(Group $group) {
+        $group->get('/emit_ticket', function (Request $request, Response $response) {
+            $mysqlConnector = new MySQLPDOConnector('mysql:host=localhost;dbname=seb', 'root', '');
     
-        $domPDF = new Dompdf();
-        $ticketPdfGen = new DomPDFTicketGeneratorAdapter($domPDF);
-        $createTicketRepo = new PDOTicketRepository($mysqlConnector->getConnection());
-        $balconyRepo = new PDOBalconyRepository($mysqlConnector->getConnection());
-        $emitTicketUseCase = new EmitTicketUseCase($createTicketRepo, $balconyRepo, $ticketPdfGen);
-
-        $controller = new TicketController($request, $response);
-        $response = $controller->emitTicket($emitTicketUseCase);
-
-        return $response;
+            $domPDF = new Dompdf();
+            $ticketPdfGen = new DomPDFTicketGeneratorAdapter($domPDF);
+            $createTicketRepo = new PDOTicketRepository($mysqlConnector->getConnection());
+            $balconyRepo = new PDOBalconyRepository($mysqlConnector->getConnection());
+    
+            $emitTicketUseCase = new EmitTicketUseCase(
+                $createTicketRepo,
+                 $balconyRepo,
+                  $ticketPdfGen,
+            );
+    
+            $controller = new TicketController($request, $response);
+            $response = $controller->emitTicket($emitTicketUseCase);
+    
+            return $response;
+        });
     });
 };

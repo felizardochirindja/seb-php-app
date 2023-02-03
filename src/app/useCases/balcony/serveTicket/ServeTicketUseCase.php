@@ -5,6 +5,7 @@ namespace Seb\App\UseCases\Balcony\ServeTicket;
 use DateTimeImmutable;
 use Exception;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
+use Seb\Adapters\Repo\Service\Interfaces\ServiceRepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum as BalconyStatus;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
@@ -14,6 +15,7 @@ final class ServeTicketUseCase
     public function __construct(
         private TicketRepository $ticketRepo,
         private BalconyRepository $balconyRepo,
+        private ServiceRepository $serviceRepo,
     ) {}
 
     public function execute(int $balconyNumber): bool
@@ -26,7 +28,7 @@ final class ServeTicketUseCase
         if (empty($firstPendingTicket)) throw new Exception('no tickets in the queue', 1);
 
         $startMoment = new DateTimeImmutable();
-        $this->balconyRepo->createBalconyService($firstPendingTicket['id'], $balconyNumber, $startMoment);
+        $this->serviceRepo->createBalconyService($firstPendingTicket['id'], $balconyNumber, $startMoment);
         $this->balconyRepo->updateBalconyStatus($balconyNumber, BalconyStatus::InService);
         $this->ticketRepo->updateTicketStatus($firstPendingTicket['id'], TicketStatus::InService);
 
