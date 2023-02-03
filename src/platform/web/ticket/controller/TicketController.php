@@ -2,6 +2,7 @@
 
 namespace Seb\Platform\Web\Ticket\Controller;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Seb\App\UseCases\Ticket\EmitTicket\EmitTicketUseCase;
 use Seb\Platform\Web\BaseController;
@@ -16,10 +17,11 @@ final class TicketController extends BaseController
         $this->response
             ->getBody()
             ->write($output->pdfCode);
-        
-        header('content-type: application/pdf');
-        http_response_code(200);
 
-        return $this->response;
+        $response = $this->response
+            ->withStatus(StatusCodeInterface::STATUS_OK)
+            ->withAddedHeader('Content-Type', 'application/pdf');
+
+        return $response;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Seb\Platform\Web\Balcony\Controller;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Seb\App\UseCases\Balcony\MarkTicketAsServed\MarkTicketAsServedUseCase;
 use Seb\App\UseCases\Balcony\ServeTicket\ServeTicketUseCase;
@@ -22,11 +23,12 @@ final class BalconyController extends BaseController
                 'status' => 'OK',
                 'message' => 'serving ticket...',
             ]));
+        
+        $response = $this->response
+            ->withStatus(StatusCodeInterface::STATUS_OK)
+            ->withAddedHeader('Content-Type', 'application/json');
 
-        header('content-type: application/json');
-        http_response_code(200);
-
-        return $this->response;
+        return $response;
     }
 
     public function markTicketAsServed(MarkTicketAsServedUseCase $useCase): Response
@@ -42,9 +44,10 @@ final class BalconyController extends BaseController
                 'message' => 'ticket served!',
             ]));
 
-        header('content-type: application/json');
-        http_response_code(200);
+        $response = $this->response
+            ->withStatus(StatusCodeInterface::STATUS_OK)
+            ->withAddedHeader('Content-Type', 'application/json');
 
-        return $this->response;
+        return $response;
     }
 }
