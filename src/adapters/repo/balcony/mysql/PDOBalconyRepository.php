@@ -2,7 +2,6 @@
 
 namespace Seb\Adapters\Repo\Balcony\MySQL;
 
-use Exception;
 use PDO;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Interfaces\PDORepository;
@@ -25,7 +24,7 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         return $statment->execute();
     }
 
-    public function readBalconyStatus(int $balconyNumber): BalconyStatus
+    public function readBalconyStatus(int $balconyNumber): BalconyStatus | false
     {
         $query = '
             select status from balconies where number = :number;
@@ -36,7 +35,8 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
 
         $statment->execute();
         $balcony = $statment->fetch(PDO::FETCH_ASSOC);
-        if (is_bool($balcony)) throw new Exception("balcony " . $balconyNumber . ' not found!', 1);
+
+        if (is_bool($balcony)) return false;
 
         return BalconyStatus::from($balcony['status']);
     }

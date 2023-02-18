@@ -7,6 +7,6 @@ use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum as BalconyStatus;
 interface BalconyRepository
 {
     public function updateBalconyStatus(int $balconyNumber, BalconyStatus $balconyStatus): bool;
-    public function readBalconyStatus(int $balconyNumber): BalconyStatus;
+    public function readBalconyStatus(int $balconyNumber): BalconyStatus | false;
     public function verifyActiveBalconies(): bool;
 }
