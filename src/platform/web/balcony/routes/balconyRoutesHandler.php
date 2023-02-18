@@ -1,5 +1,8 @@
 <?php
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Processor\UidProcessor;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Seb\Adapters\DB\PDO\MySQL\MySQLPDOConnector;
@@ -21,7 +24,15 @@ return function (App $app) {
             $balconyRepo = new PDOBalconyRepository($mysqlConnector->getConnection());
             $serviceRepo = new PDOServiceRepository($mysqlConnector->getConnection());
 
-            $serveTicketUseCase = new ServeTicketUseCase($ticketRepo, $balconyRepo, $serviceRepo);
+            $logger = new Logger('Seb');
+
+            $processor = new UidProcessor();
+            $logger->pushProcessor($processor);
+
+            $handler = new StreamHandler(__DIR__ . '/../../../../../logs/app.log', Logger::DEBUG);
+            $logger->pushHandler($handler);
+
+            $serveTicketUseCase = new ServeTicketUseCase($ticketRepo, $balconyRepo, $serviceRepo, $logger);
             $controller = new BalconyController($request, $response);
     
             $response = $controller->serveTicket($serveTicketUseCase);
@@ -36,7 +47,15 @@ return function (App $app) {
             $balconyRepo = new PDOBalconyRepository($mysqlConnector->getConnection());
             $serviceRepo = new PDOServiceRepository($mysqlConnector->getConnection());
 
-            $useCase = new MarkTicketAsServedUseCase($ticketRepo, $balconyRepo, $serviceRepo);
+            $logger = new Logger('Seb');
+
+            $processor = new UidProcessor();
+            $logger->pushProcessor($processor);
+
+            $handler = new StreamHandler(__DIR__ . '/../../../../../logs/app.log', Logger::DEBUG);
+            $logger->pushHandler($handler);
+
+            $useCase = new MarkTicketAsServedUseCase($ticketRepo, $balconyRepo, $serviceRepo, $logger);
             $controller = new BalconyController($request, $response);
     
             $response = $controller->markTicketAsServed($useCase);

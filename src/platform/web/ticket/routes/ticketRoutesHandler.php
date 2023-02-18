@@ -1,6 +1,9 @@
 <?php
 
 use Dompdf\Dompdf;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Processor\UidProcessor;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Seb\Adapters\DB\PDO\MySQL\MySQLPDOConnector;
@@ -21,11 +24,20 @@ return function (App $app) {
             $ticketPdfGen = new DomPDFTicketGeneratorAdapter($domPDF);
             $createTicketRepo = new PDOTicketRepository($mysqlConnector->getConnection());
             $balconyRepo = new PDOBalconyRepository($mysqlConnector->getConnection());
+
+            $logger = new Logger('Seb');
+
+            $processor = new UidProcessor();
+            $logger->pushProcessor($processor);
+
+            $handler = new StreamHandler(__DIR__ . '/../../../../../logs/app.log', Logger::DEBUG);
+            $logger->pushHandler($handler);
     
             $emitTicketUseCase = new EmitTicketUseCase(
                 $createTicketRepo,
-                 $balconyRepo,
-                  $ticketPdfGen,
+                $balconyRepo,
+                $ticketPdfGen,
+                $logger
             );
     
             $controller = new TicketController($request, $response);
