@@ -18,7 +18,8 @@
         "dompdf/dompdf": "^2.0",
         "slim/slim": "^4.10",
         "slim/psr7": "^1.5",
-        "php-di/php-di": "^6.4"
+        "php-di/php-di": "^6.4",
+        "monolog/monolog": "^2.8"
     },
     "scripts": {
         "server": "php81 -S localhost:8080 -t public"
