@@ -3,6 +3,7 @@
 namespace Seb\Adapters\Repo\Ticket\MySQL;
 
 use DateTimeInterface as DateTime;
+use Exception;
 use PDO;
 use Seb\Adapters\Repo\Interfaces\PDORepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
@@ -29,6 +30,8 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $insertedTicketId = $this->connection->lastInsertId();
+        if ($insertedTicketId === false) throw new Exception("error while looking the last inserted id");
+
         $ticket = $this->readTicketById($insertedTicketId);
         return $ticket;
     }
@@ -44,6 +47,9 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
+
+        if ($statment->rowCount() === 0) throw new Exception("record with #id of $id not found!");;
+
         return $ticket;
     }
 
@@ -61,7 +67,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         return (array) $ticket;
     }
 
-    public function readFirstTicketByStatus(TicketStatus $ticketStatus): array
+    public function readFirstFoundTicketByStatus(TicketStatus $ticketStatus): array
     {
         $query = '
             select * from tickets where status = :status limit 1;
