@@ -5,22 +5,27 @@ namespace Seb\App\UseCases\Ticket\EmitTicket;
 use DateTime;
 use DateTimeImmutable;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Seb\Adapters\Libs\Ticket\PDFGenerator\DTO\GenerateTicketPDFInput;
 use Seb\Adapters\Libs\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
+use Seb\App\UseCases\BaseUseCase;
 use Seb\App\UseCases\Ticket\EmitTicket\DTO\EmitTicketOutput;
 use Seb\Enterprise\Ticket\Entities\TicketEntity;
 use Seb\Enterprise\Ticket\ValueObjects\TicketStatusEnum as TicketStatus;
 
 
-final class EmitTicketUseCase
+final class EmitTicketUseCase extends BaseUseCase
 {
     public function __construct(
         private TicketRepository $ticketRepository,
         private BalconyRepository $balconyRepository,
         private TicketPDFGenerator $pdfGenerator,
-    ) {}
+        LoggerInterface $logger,
+    ) {
+        parent::__construct($logger);
+    }
 
     public function execute(): EmitTicketOutput
     {
@@ -69,6 +74,8 @@ final class EmitTicketUseCase
             $insertedTicket['date'],
             $insertedTicket['time']
         );
+
+        $this->logger->notice("created ticket $insertedTicket[code]");
 
         return $emitTicketOutput;
     }
