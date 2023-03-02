@@ -41,6 +41,14 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        EmitTicketUseCase::class => function (ContainerInterface $container) {
+            return new EmitTicketUseCase(
+                $container->get(TicketRepository::class),
+                $container->get(BalconyRepository::class),
+                $container->get(TicketPDFGenerator::class),
+                $container->get(LoggerInterface::class),
+            );
+        }
     ]);
 };
 
