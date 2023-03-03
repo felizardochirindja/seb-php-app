@@ -20,7 +20,7 @@ use Seb\App\UseCases\Ticket\EmitTicket\EmitTicketUseCase;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        TicketPDFGenerator::class => DI\create(DomPDFTicketGeneratorAdapter::class)->constructor(new Dompdf()),
+        TicketPDFGenerator::class => new DomPDFTicketGeneratorAdapter(new Dompdf),
         PDOConnector::class => DI\create(MySQLPDOConnector::class)->constructor('mysql:host=localhost;dbname=seb', 'root', ''),
         TicketRepository::class => function(ContainerInterface $container) {
             return new PDOTicketRepository($container->get(PDOConnector::class)->getConnection());
