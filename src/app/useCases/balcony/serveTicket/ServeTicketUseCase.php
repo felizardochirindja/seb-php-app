@@ -18,7 +18,7 @@ final class ServeTicketUseCase extends BaseUseCase
         private TicketRepository $ticketRepo,
         private BalconyRepository $balconyRepo,
         private ServiceRepository $serviceRepo,
-        protected LoggerInterface $logger,
+        LoggerInterface $logger,
     ) {
         parent::__construct($logger);
     }
