@@ -14,20 +14,15 @@ use Seb\Adapters\Libs\Ticket\PDFGenerator\DomPDF\DomPDFTicketGeneratorAdapter;
 use Seb\Adapters\Libs\Ticket\PDFGenerator\TicketPDFGeneratable as TicketPDFGenerator;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Balcony\MySQL\PDOBalconyRepository;
+use Seb\Adapters\Repo\Service\Interfaces\ServiceRepository;
+use Seb\Adapters\Repo\Service\MySQL\PDOServiceRepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\Adapters\Repo\Ticket\MySQL\PDOTicketRepository;
-use Seb\App\UseCases\Ticket\EmitTicket\EmitTicketUseCase;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
+        // adapters
         TicketPDFGenerator::class => new DomPDFTicketGeneratorAdapter(new Dompdf),
-        PDOConnector::class => DI\create(MySQLPDOConnector::class)->constructor('mysql:host=localhost;dbname=seb', 'root', ''),
-        TicketRepository::class => function(ContainerInterface $container) {
-            return new PDOTicketRepository($container->get(PDOConnector::class)->getConnection());
-        },
-        BalconyRepository::class => function(ContainerInterface $container) {
-            return new PDOBalconyRepository($container->get(PDOConnector::class)->getConnection());
-        },
         LoggerInterface::class => function (ContainerInterface $container) {
             $settings = $container->get('settings');
             
@@ -42,14 +37,21 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
-        EmitTicketUseCase::class => function (ContainerInterface $container) {
-            return new EmitTicketUseCase(
-                $container->get(TicketRepository::class),
-                $container->get(BalconyRepository::class),
-                $container->get(TicketPDFGenerator::class),
-                $container->get(LoggerInterface::class),
-            );
-        }
+
+        // database
+        PDOConnector::class => DI\create(MySQLPDOConnector::class)
+            ->constructor('mysql:host=localhost;dbname=seb', 'root', ''),
+           
+        // repositories
+        TicketRepository::class => function(ContainerInterface $container) {
+            return new PDOTicketRepository($container->get(PDOConnector::class)->getConnection());
+        },
+        BalconyRepository::class => function(ContainerInterface $container) {
+            return new PDOBalconyRepository($container->get(PDOConnector::class)->getConnection());
+        },
+        ServiceRepository::class => function(ContainerInterface $container) {
+            return new PDOServiceRepository($container->get(PDOConnector::class)->getConnection());
+        },
     ]);
 };
 
