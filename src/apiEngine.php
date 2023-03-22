@@ -21,7 +21,7 @@ $app = AppFactory::create();
 $middleware = require_once __DIR__ . '/config/middleware.php';
 $middleware($app);
 
-$ticketRoutes = require_once __DIR__ . '/platform/web/ticket/routes/ticketRoutesHandler.php';
+$ticketRoutes = require_once __DIR__ . '/platform/web/ticket/routes/ticketRoutes.php';
 $balconyRoutes = require_once __DIR__ . '/platform/web/balcony/routes/balconyRoutes.php';
 
 $ticketRoutes($app);
