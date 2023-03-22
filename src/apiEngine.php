@@ -22,7 +22,7 @@ $middleware = require_once __DIR__ . '/config/middleware.php';
 $middleware($app);
 
 $ticketRoutes = require_once __DIR__ . '/platform/web/ticket/routes/ticketRoutesHandler.php';
-$balconyRoutes = require_once __DIR__ . '/platform/web/balcony/routes/balconyRoutesHandler.php';
+$balconyRoutes = require_once __DIR__ . '/platform/web/balcony/routes/balconyRoutes.php';
 
 $ticketRoutes($app);
 $balconyRoutes($app);
