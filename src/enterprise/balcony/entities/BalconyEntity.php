@@ -34,9 +34,8 @@ final class BalconyEntity
 
     public function setNumber($number): self
     {
-        if ($number < 1) {
+        if ($number < 1)
             throw new DomainException("balcony number must be greeter than 0", 1);
-        }
 
         $this->number = $number;
         return $this;

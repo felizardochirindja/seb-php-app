@@ -30,9 +30,8 @@ final class TicketEntity
 
     public function setCode(int $code): self
     {
-        if ($code < 100) {
+        if ($code < 100)
             throw new DomainException("code must be greeter than 99", 1);
-        }
 
         $this->code = $code;
         return $this;
