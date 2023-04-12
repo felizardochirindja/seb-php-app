@@ -22,7 +22,8 @@
         "monolog/monolog": "^2.8"
     },
     "scripts": {
-        "server": "php81 -S localhost:8080 -t public"
+        "server": "php81 -S localhost:8080 -t public",
+        "test": "php81 .\\vendor\\bin\\phpunit .\\tests\\ --colors"
     },
     "config": {
         "process-timeout": 0
