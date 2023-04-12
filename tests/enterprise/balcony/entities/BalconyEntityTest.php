@@ -13,14 +13,14 @@ final class BalconyEntityTest extends TestCase
     }
 
     public function testValidNumber() {
-        $ticketEntity = new BalconyEntity();
-        $result = $ticketEntity->setNumber(1);
+        $balconyEntity = new BalconyEntity();
+        $result = $balconyEntity->setNumber(1);
         $this->assertInstanceOf(BalconyEntity::class, $result);
     }
 
     public function testInvalidNumber() {
-        $ticketEntity = new BalconyEntity();
+        $balconyEntity = new BalconyEntity();
         $this->expectException(DomainException::class);
-        $ticketEntity->setNumber(0);
+        $balconyEntity->setNumber(0);
     }
 }
