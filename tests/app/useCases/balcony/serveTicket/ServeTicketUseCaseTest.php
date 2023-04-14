@@ -55,4 +55,16 @@ final class ServeTicketUseCaseTest extends TestCase
 
         $this->serveTicketUseCase->execute($balconyNumber);
     }
+
+    public function testExecuteWithBalconyNotActive()
+    {
+        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::Inactive);
+
+        $balconyNumber = 1;
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("balcony $balconyNumber is not active");
+
+        $this->serveTicketUseCase->execute($balconyNumber);
+    }
 }
