@@ -10,51 +10,48 @@ use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum;
 
 final class ServeTicketUseCaseTest extends TestCase
 {
+    private BalconyRepository $balconyRepositoryMock;
+    private TicketRepository $ticketRepositoryMock;
+    private ServiceRepository $serviceRepositoryMock;
+    private LoggerInterface $loggerMock;
+    private ServeTicketUseCase $serveTicketUseCase;
+
+    public function setUp(): void
+    {
+        $this->balconyRepositoryMock = $this->createStub(BalconyRepository::class);
+        $this->ticketRepositoryMock = $this->createStub(TicketRepository::class);
+        $this->serviceRepositoryMock = $this->createStub(ServiceRepository::class);
+        $this->loggerMock = $this->createStub(LoggerInterface::class);
+        
+        $this->serveTicketUseCase = new ServeTicketUseCase(
+            $this->ticketRepositoryMock,
+            $this->balconyRepositoryMock,
+            $this->serviceRepositoryMock,
+            $this->loggerMock
+        );
+    }
+
     public function testExecuteWithNotFoundBalcony(): void
     {
-        $balconyRepositoryMock = $this->createStub(BalconyRepository::class);
-        $balconyRepositoryMock->method('readBalconyStatus')->willReturn(false);
-
-        $ticketRepositoryMock = $this->createStub(TicketRepository::class);
-        $serviceRepositoryMock = $this->createStub(ServiceRepository::class);
-        $loggerMock = $this->createStub(LoggerInterface::class);
-
-        $serveTicketUseCase = new ServeTicketUseCase(
-            $ticketRepositoryMock,
-            $balconyRepositoryMock,
-            $serviceRepositoryMock,
-            $loggerMock
-        );
+        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(false);
 
         $balconyNumber = 1;
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("balcony $balconyNumber not found!");
 
-        $serveTicketUseCase->execute(1);
+        $this->serveTicketUseCase->execute(1);
     }
 
     public function testExecuteWithBalconyInService(): void
     {
-        $balconyRepositoryMock = $this->createStub(BalconyRepository::class);
-        $balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::InService);
-
-        $ticketRepositoryMock = $this->createStub(TicketRepository::class);
-        $serviceRepositoryMock = $this->createStub(ServiceRepository::class);
-        $loggerMock = $this->createStub(LoggerInterface::class);
-
-        $serveTicketUseCase = new ServeTicketUseCase(
-            $ticketRepositoryMock,
-            $balconyRepositoryMock,
-            $serviceRepositoryMock,
-            $loggerMock
-        );
+        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::InService);
 
         $balconyNumber = 1;
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("balcony $balconyNumber is already in service");
 
-        $serveTicketUseCase->execute($balconyNumber);
+        $this->serveTicketUseCase->execute($balconyNumber);
     }
 }
