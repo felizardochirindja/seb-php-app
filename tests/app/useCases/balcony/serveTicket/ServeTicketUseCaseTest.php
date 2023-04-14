@@ -6,6 +6,7 @@ use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Service\Interfaces\ServiceRepository;
 use Seb\Adapters\Repo\Ticket\Interfaces\TicketRepository;
 use Seb\App\UseCases\Balcony\ServeTicket\ServeTicketUseCase;
+use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum;
 
 final class ServeTicketUseCaseTest extends TestCase
 {
@@ -31,5 +32,29 @@ final class ServeTicketUseCaseTest extends TestCase
         $this->expectExceptionMessage("balcony $balconyNumber not found!");
 
         $serveTicketUseCase->execute(1);
+    }
+
+    public function testExecuteWithBalconyInService(): void
+    {
+        $balconyRepositoryMock = $this->createStub(BalconyRepository::class);
+        $balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::InService);
+
+        $ticketRepositoryMock = $this->createStub(TicketRepository::class);
+        $serviceRepositoryMock = $this->createStub(ServiceRepository::class);
+        $loggerMock = $this->createStub(LoggerInterface::class);
+
+        $serveTicketUseCase = new ServeTicketUseCase(
+            $ticketRepositoryMock,
+            $balconyRepositoryMock,
+            $serviceRepositoryMock,
+            $loggerMock
+        );
+
+        $balconyNumber = 1;
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("balcony $balconyNumber is already in service");
+
+        $serveTicketUseCase->execute($balconyNumber);
     }
 }
