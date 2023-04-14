@@ -12,7 +12,7 @@ use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum;
 final class ServeTicketUseCaseTest extends TestCase
 {
     private BalconyRepository | MockObject $balconyRepositoryMock;
-    private TicketRepository $ticketRepositoryMock;
+    private TicketRepository | MockObject $ticketRepositoryMock;
     private ServiceRepository $serviceRepositoryMock;
     private LoggerInterface $loggerMock;
     private ServeTicketUseCase $serveTicketUseCase;
@@ -66,5 +66,16 @@ final class ServeTicketUseCaseTest extends TestCase
         $this->expectExceptionMessage("balcony $balconyNumber is not active");
 
         $this->serveTicketUseCase->execute($balconyNumber);
+    }
+
+    public function testExecuteWithNoPendingTicket(): void
+    {
+        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::NotInService);
+        $this->ticketRepositoryMock->method('readFirstFoundTicketByStatus')->willReturn([]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('no tickets in the queue');
+
+        $this->serveTicketUseCase->execute(1);
     }
 }
