@@ -56,7 +56,6 @@ final class EmitTicketUseCase extends BaseUseCase
         $insertedTicket['time'] = $ticketEmitionMoment->format('H:i:s');
         $insertedTicketMessage = 'obedeça a fila...';
 
-        // se for utilizado um desktop ele gera um ticket em pdf
         $pdfCode = $this->pdfGenerator->generate(
             new GenerateTicketPDFInput(
                 $insertedTicket['code'],
@@ -67,7 +66,6 @@ final class EmitTicketUseCase extends BaseUseCase
             )
         );
         
-        // se for um celular ele retorna a informacao do ticket que foi gerado
         $emitTicketOutput = new EmitTicketOutput(
             $insertedTicket['code'],
             $pdfCode,
