@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
@@ -10,7 +11,7 @@ use Seb\Enterprise\Balcony\ValueObjects\BalconyStatusEnum;
 
 final class ServeTicketUseCaseTest extends TestCase
 {
-    private BalconyRepository $balconyRepositoryMock;
+    private BalconyRepository | MockObject $balconyRepositoryMock;
     private TicketRepository $ticketRepositoryMock;
     private ServiceRepository $serviceRepositoryMock;
     private LoggerInterface $loggerMock;
