@@ -32,7 +32,7 @@ final class ServeTicketUseCase extends BaseUseCase
         if ($actualBalconyStatus === BalconyStatus::Inactive) throw new Exception('balcony ' . $balconyNumber . ' is not active');
 
         $firstPendingTicket = $this->ticketRepo->readFirstFoundTicketByStatus(TicketStatus::Pending);
-        if (empty($firstPendingTicket)) throw new Exception('no tickets in the queue', 1);
+        if (empty($firstPendingTicket)) throw new Exception('no tickets in the queue');
 
         $startMoment = new DateTimeImmutable();
         $this->serviceRepo->createBalconyService($firstPendingTicket['id'], $balconyNumber, $startMoment);
