@@ -62,9 +62,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
-
-        if ($statment->rowCount() === 0) return [];
-        return (array) $ticket;
+        return ($statment->rowCount() === 0) ? [] : $ticket;
     }
 
     public function readFirstFoundTicketByStatus(TicketStatus $ticketStatus): array
@@ -80,8 +78,7 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $ticket = $statment->fetch(PDO::FETCH_ASSOC);
-        if ($statment->rowCount() === 0) return [];
-        return $ticket;
+        return ($statment->rowCount() === 0) ? [] : $ticket;
     }
 
     public function updateTicketStatus(int $ticketId, TicketStatus $ticketStatus): bool
@@ -112,7 +109,6 @@ final class PDOTicketRepository extends PDORepository implements TicketRepositor
         $statment->execute();
 
         $tickets = $statment->fetch(PDO::FETCH_ASSOC);
-        if ($statment->rowCount() === 0) return [];
-        return $tickets;
+        return ($statment->rowCount() === 0) ? [] : $tickets;
     }
 }
