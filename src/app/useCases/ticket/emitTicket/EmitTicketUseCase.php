@@ -34,18 +34,18 @@ final class EmitTicketUseCase extends BaseUseCase
 
         $ticketsFollowing = $this->ticketRepository->readTicketsByStatus(TicketStatus::Pending);
 
-        $ticket = $this->ticketRepository->readLastInsertedTicket();
-        $ticketCode = empty($ticket) ? 99 : $ticket['code'];
+        $lastInsertedticket = $this->ticketRepository->readLastInsertedTicket();
+        $ticketCode = empty($lastInsertedticket) ? 99 : $lastInsertedticket['code'];
 
-        $ticket = new TicketEntity();
-        $ticket->setCode(++$ticketCode)
+        $newTicket = new TicketEntity();
+        $newTicket->setCode(++$ticketCode)
             ->setStatus(TicketStatus::Pending)
             ->setEmitionMoment(new DateTime());
             
         $insertedTicket = $this->ticketRepository->createTicket(
-            $ticket->getEmitionMoment(),
-            $ticket->getCode(),
-            $ticket->getStatus(),
+            $newTicket->getEmitionMoment(),
+            $newTicket->getCode(),
+            $newTicket->getStatus(),
         );
 
         $ticketEmitionMoment = $insertedTicket['emition_moment'];
@@ -56,7 +56,7 @@ final class EmitTicketUseCase extends BaseUseCase
         $insertedTicket['time'] = $ticketEmitionMoment->format('H:i:s');
         $insertedTicketMessage = 'obedeça a fila...';
 
-        $pdfCode = $this->pdfGenerator->generate(
+        $generatedPdfCode = $this->pdfGenerator->generate(
             new GenerateTicketPDFInput(
                 $insertedTicket['code'],
                 $insertedTicket['date'],
@@ -68,7 +68,7 @@ final class EmitTicketUseCase extends BaseUseCase
         
         $emitTicketOutput = new EmitTicketOutput(
             $insertedTicket['code'],
-            $pdfCode,
+            $generatedPdfCode,
             $insertedTicket['date'],
             $insertedTicket['time']
         );
