@@ -2,6 +2,7 @@
 
 namespace Seb\Adapters\Repo\Balcony\MySQL;
 
+use Exception;
 use PDO;
 use Seb\Adapters\Repo\Balcony\Interfaces\BalconyRepository;
 use Seb\Adapters\Repo\Interfaces\PDORepository;
@@ -50,8 +51,11 @@ final class PDOBalconyRepository extends PDORepository implements BalconyReposit
         $statment = $this->connection->prepare($query);
         $statment->bindValue(':first_status', 'not in service');
         $statment->bindValue(':second_status', 'in service');
-
-        $statment->execute();
+        
+        if (!$statment->execute()) {
+            throw new Exception("error while executing query");
+        }
+        
         $activeBalconiesNumber = $statment->rowCount();
         return ($activeBalconiesNumber < 1) ? false : true;
     }
