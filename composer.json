@@ -23,7 +23,7 @@
     },
     "scripts": {
         "server": "php81 -S localhost:8080 -t public",
-        "test": "php81 .\\vendor\\bin\\phpunit .\\tests\\"
+        "test": "php81 .\\vendor\\bin\\phpunit .\\tests\\ --colors=always --testdox"
     },
     "config": {
         "process-timeout": 0
