@@ -34,7 +34,9 @@ final class ServeTicketUseCaseTest extends TestCase
 
     public function testExecuteWithNotFoundBalcony(): void
     {
-        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(false);
+        $this->balconyRepositoryMock
+            ->method('readBalconyStatus')
+            ->willReturn(false);
 
         $balconyNumber = 1;
 
@@ -46,7 +48,9 @@ final class ServeTicketUseCaseTest extends TestCase
 
     public function testExecuteWithBalconyInService(): void
     {
-        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::InService);
+        $this->balconyRepositoryMock
+            ->method('readBalconyStatus')
+            ->willReturn(BalconyStatusEnum::InService);
 
         $balconyNumber = 1;
 
@@ -70,8 +74,13 @@ final class ServeTicketUseCaseTest extends TestCase
 
     public function testExecuteWithNoPendingTicket(): void
     {
-        $this->balconyRepositoryMock->method('readBalconyStatus')->willReturn(BalconyStatusEnum::NotInService);
-        $this->ticketRepositoryMock->method('readFirstFoundTicketByStatus')->willReturn([]);
+        $this->balconyRepositoryMock
+            ->method('readBalconyStatus')
+            ->willReturn(BalconyStatusEnum::NotInService);
+            
+        $this->ticketRepositoryMock
+            ->method('readFirstFoundTicketByStatus')
+            ->willReturn([]);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('no tickets in the queue');
