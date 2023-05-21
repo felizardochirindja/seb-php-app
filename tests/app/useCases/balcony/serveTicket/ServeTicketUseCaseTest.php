@@ -87,4 +87,27 @@ final class ServeTicketUseCaseTest extends TestCase
 
         $this->serveTicketUseCase->execute(1);
     }
+
+    public function testServeTicketWhenBalconyIsNotInServiceAndTicketExists(): void
+    {
+        $this->balconyRepositoryMock
+            ->method('readBalconyStatus')
+            ->willReturn(BalconyStatusEnum::NotInService);
+
+        $this->ticketRepositoryMock
+            ->method('readFirstFoundTicketByStatus')
+            ->willReturn(['id' => 2, 'code' => 100]);
+
+        $this->serviceRepositoryMock
+            ->method('createBalconyService')
+            ->willReturn(true);
+
+        $this->loggerMock
+            ->method('notice')
+            ->willReturnCallback(function(): void {});
+
+        $result = $this->serveTicketUseCase->execute(1);
+
+        $this->assertTrue($result);
+    }
 }
