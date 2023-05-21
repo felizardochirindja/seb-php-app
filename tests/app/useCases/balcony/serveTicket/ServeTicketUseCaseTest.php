@@ -13,7 +13,7 @@ final class ServeTicketUseCaseTest extends TestCase
 {
     private BalconyRepository | MockObject $balconyRepositoryMock;
     private TicketRepository | MockObject $ticketRepositoryMock;
-    private ServiceRepository $serviceRepositoryMock;
+    private ServiceRepository | MockObject $serviceRepositoryMock;
     private LoggerInterface $loggerMock;
     private ServeTicketUseCase $serveTicketUseCase;
 
