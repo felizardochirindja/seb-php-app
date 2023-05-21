@@ -14,7 +14,7 @@ final class ServeTicketUseCaseTest extends TestCase
     private BalconyRepository | MockObject $balconyRepositoryMock;
     private TicketRepository | MockObject $ticketRepositoryMock;
     private ServiceRepository | MockObject $serviceRepositoryMock;
-    private LoggerInterface $loggerMock;
+    private LoggerInterface | MockObject $loggerMock;
     private ServeTicketUseCase $serveTicketUseCase;
 
     public function setUp(): void
